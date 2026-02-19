@@ -30,5 +30,34 @@
  *   // => { items: [], totalBill: 0 }
  */
 export function sabziMandiBill(shoppingList, priceList) {
-  // Your code here
+  let items = [];
+  let totalBill = 0;
+
+  for (let item of shoppingList) {
+    let sabziname = item.name;
+    let quantity = item.qty;
+    let priceofitem = priceList[sabziname]; // sabzi ke name se uska price find out kray gay price list mai se
+    if (!(sabziname in priceList)) {
+      continue; // Is item ko skip karo, next item pe jao
+    }
+
+    if (priceofitem > 80) {
+      continue; // Is item ko skip karo, next item pe jao
+    }
+
+    let totalcost = quantity * priceofitem;
+    totalBill = totalBill+totalcost; 
+/* 
+Yay purana total bill (jo pehle se add ho chuka hai) aur current item ki 
+totalcost (qty * priceofitem) ko add karta hai takay final total show karwa sakay. */
+
+    items.push({    // yay sab data items array mai push kr deta he
+      name: sabziname,
+      qty: quantity,
+      cost: totalcost, /* Yahan 'cost' mein totalcost daala hai (na ke sirf priceofitem).
+  Kyunki test expect karta hai ke cost mein us sabzi ka TOTAL paisa ho,
+  na ke sirf per kg rate. */
+    });
+  }
+  return { items: items, totalBill: totalBill }
 }

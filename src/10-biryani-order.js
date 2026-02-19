@@ -34,5 +34,27 @@
  *   // => { totalBatches: 3, totalPlates: 15, ordersProcessed: 2 }
  */
 export function biryaniBatchProcessor(orders) {
-  // Your code here
+  if (!Array.isArray(orders) || orders.length === 0) {
+    return { totalBatches: 0, totalPlates: 0, ordersProcessed: 0 };
+  }
+  let batches = 0;
+  let totalBatches = 0;
+  let totalPlates = 0;
+  let ordersProcessed = 0;
+  let remainingPlates;
+  for (let order of orders) {
+    if (order <= 0 || !Number.isInteger(order) || Number.isNaN(order)) {
+      continue;
+    }
+    ordersProcessed++;             // orders kitnay proceed hogaiy update krtay jao 1 se
+    remainingPlates = order;        // har order ki plates 
+    totalPlates += order;           // har order ki plates ko total mai add krtay jao
+    do { 
+      totalBatches++;               // batches ko 1 se increase krtay jao jitni times loop ru kray
+      remainingPlates -= Math.min(remainingPlates, 5); // ek order ko batches mein todna — max 5 plates per batch
+    }
+    while (remainingPlates > 0)     // agar remaining plates 0 hogai hain to next order lay ao nahi to isi order ki remaining plates ko next batch mai cover kro 
+  }
+
+  return { totalBatches: totalBatches, totalPlates: totalPlates, ordersProcessed: ordersProcessed }
 }

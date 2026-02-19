@@ -34,5 +34,30 @@
  *   // => { count: 2, totalDuration: 300 }
  */
 export function buildPlaylist(songs, maxDuration) {
-  // Your code here
+  if (!Array.isArray(songs) || typeof maxDuration !== "number" || maxDuration <= 0) {
+    return { count: 0, totalDuration: 0 };
+  }
+
+  let indexinarray = 0;     // yay btata he ke loop konsay index per he 
+  let count = 0;     // yay songs count kray ga
+  let totalDuration = 0;    // yay songs ki total duration ko handle kray ga
+
+  while (indexinarray < songs.length) {
+    let currentSong = songs[indexinarray];
+
+    if (typeof currentSong !== "number" || currentSong <= 0 || isNaN(currentSong)) {
+      indexinarray++;    // agar sab true he to incdex 1 per chlay jao and so on ...
+      continue;
+    }
+
+    if (totalDuration + currentSong > maxDuration) {
+      break;   // agar songs ki total duration mai current songs ki duration add krtay time limit zyaada ho rahi he to break lga do 
+    }
+else{
+    totalDuration = totalDuration + currentSong;  // agar nai limit zyaada hoi to add krtay jao total duration mai currentsongs add krtay jao
+    count++;      // count bi ek ek krkay increase jatay jao
+    indexinarray++;     // index bi one by one next per move krtay jao 
+  }
+  }
+  return { count, totalDuration };  
 }

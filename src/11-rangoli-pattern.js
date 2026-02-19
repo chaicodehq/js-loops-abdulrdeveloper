@@ -36,5 +36,26 @@
  *   rangoli(3) // => ["  *", " * *", "* * *", " * *", "  *"]
  */
 export function rangoli(n) {
-  // Your code here
+  if(typeof n !== "number" || n <= 0 || Number.isNaN(n) || !Number.isInteger(n)){
+    return [];
+  }
+
+  let array = [];
+  for(let i=1; i <= n; i++){
+    let rows = "";
+    let spaces = " ".repeat(n - i);
+    for(let j=1; j <= i; j++){
+      rows += "* ";
+    }
+    array.push(spaces + rows.trim());
+  }
+  for(let i=n-1; i >= 1; i--){
+    let rows = "";
+    let spaces = " ".repeat(n - i);
+    for(let j=1; j <= i; j++){
+      rows += "* ";
+    }
+    array.push(spaces + rows.trim());
+  }
+return array;
 }

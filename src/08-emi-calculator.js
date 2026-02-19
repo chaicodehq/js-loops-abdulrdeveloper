@@ -42,5 +42,39 @@
  *   // => { months: -1, totalPaid: -1, totalInterest: -1 }
  */
 export function calculateEMI(principal, monthlyRate, emi) {
-  // Your code here
+  if (principal <= 0 || monthlyRate <= 0 || emi <= 0 || typeof principal !== "number" || typeof emi !== "number" || typeof monthlyRate !== "number") {
+    return { months: -1, totalPaid: -1, totalInterest: -1 };
+  }
+
+  let firstMonthInterest = principal * monthlyRate;  // sabse pehle mahine ka interest check krna he ke kitnay months mai cover krna he and agar bank ka interest , user ki emi se zyaada he to infinte loop ho jaiy ga kyo ke bank ko user ki emi se zyaada paise nai dene so reutrn -1
+  if (emi <= firstMonthInterest)
+    return { months: -1, totalPaid: -1, totalInterest: -1 };
+
+ let remaining = principal;
+ let totalPaid = 0;     // jo usne abhi tak day diay hain
+ let totalInterest = 0; // total interest (jo har mahine bank ki taraf se interest lagta tha uska total)
+ let months = 0;        // total months kitnay months mai pay krnay hain / kr diay
+ let interest;          // har mahine ka interest jo usne dena he
+
+  while (remaining > 0) {
+    interest = remaining * monthlyRate; // jo abhi baaki hai (remaining) × monthly rate = is mahine ka interest , EMI ka yahan koi kaam nahi, sirf baaki amount pe rate lagta hai
+    remaining += interest;              // ab unho ne interest ko bi remaining (total price of mobile, jo usne abhi dene hain) mai add krdi he kyo ke ose har mahine bank ki taraf se extra interest lagta he 
+    totalInterest += interest;
+
+    if (remaining <= emi) {   // agar emi ke paise total paiso se zyaada hogaiy hain to jo remaining paise bach gaiy hain sirf vo ek hi bar mai day do full emi nai dene ki zroorat 
+      totalPaid += remaining; // agar vo bi paise dy diay to unhay bi total paid mai dalo and final show krwao
+      remaining = 0;
+    }
+    else { // agar emi , total remaining paiso se zyada he to emi bi pay kro 
+      totalPaid += emi;
+      remaining -= emi;
+    }
+    months++;
+  }
+  return {
+    months: months,
+    totalPaid: Math.round(totalPaid * 100)/100,
+    totalInterest: Math.round(totalInterest * 100)/100
+  }
 }
+
